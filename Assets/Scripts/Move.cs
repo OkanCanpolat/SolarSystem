@@ -14,4 +14,10 @@ public class Move : MonoBehaviour
         transform.RotateAround(rotateAxis.transform.position,
             rotateAxis.transform.up, rotateSpeed * Time.deltaTime);
     }
+
+    //Instantiate panel 
+    private void OnMouseDown()
+    {
+        UIManager.sharedInstance.InstantiatePanel(gameObject.name);
+    }
 }

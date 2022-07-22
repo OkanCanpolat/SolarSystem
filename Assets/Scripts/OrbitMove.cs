@@ -1,39 +1,57 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // This class provide planet to rotate around the Sun and determine full circle
 public class OrbitMove : MonoBehaviour
 {
-    public int orbitalSpeed;
-    public Transform orbitalAxis = null;
-    public string planetName;
-    private float rotateAngle;
-    
-    
-    void Update()
-    {
-        RotateAroundSun();
-        ChechkRotate();
-    }
+    [Range(0.01f, 1f)]
+    [SerializeField] float orbitalSpeed;
+    [SerializeField] string planetName;
 
-    void RotateAroundSun()
-    {
-        //Rotate the object around the Sun
-        transform.RotateAround(orbitalAxis.transform.position,
-            orbitalAxis.transform.up, orbitalSpeed * Time.deltaTime);
-        //Calculate the angle the planet rotates
-        rotateAngle += orbitalSpeed * Time.deltaTime;
-    }
+    //Each planet has two curves to create elliptical orbit
+    [SerializeField] Transform[] curves;
+    
+    private int currentCurve = 0;
 
-    void ChechkRotate()
+    private void Start()
     {
-        //If the planet made a full circle reset rotateAngle and print to screen
-        if(rotateAngle >= 360)
+        StartCoroutine(RotateAroundSun());
+    }
+    
+
+    IEnumerator RotateAroundSun()
+    {
+
+        Vector3 destination = transform.position;
+        float t = 0f;
+
+        while (t < 1)
         {
-            rotateAngle = 0;
+            t += orbitalSpeed * Time.deltaTime;
+            destination = BezierCurveManager.
+                sharedInstance.GetBezierCurve(t,
+                    curves[currentCurve].GetChild(0).position,
+                    curves[currentCurve].GetChild(1).position,
+                    curves[currentCurve].GetChild(2).position,
+                    curves[currentCurve].GetChild(3).position);
+
+            transform.position = destination;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        //After completing one of the curves, switch to the next
+        currentCurve++;
+
+        //if each curve is completed start the loop again
+        if(currentCurve == curves.Length)
+        {
+            currentCurve = 0;
             Debug.Log(planetName + " made a full circle");
         }
+
+        StartCoroutine(RotateAroundSun());
+        yield break;
     }
 
 }
