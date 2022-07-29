@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0d249430d5a6b45b5e6f77ed09322b, type: 3}
+  m_Name: EarthInfo
+  m_EditorClassIdentifier: 
+  curves:
+  - {fileID: 3316675434830606615, guid: e75971d88f1cb7f458e791855ef256a7, type: 3}
+  - {fileID: 1940192565904042397, guid: 8703c383e16bd084f8ffc86a1e133d66, type: 3}

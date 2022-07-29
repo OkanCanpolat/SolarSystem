@@ -8,8 +8,8 @@ public class OrbitMove : MonoBehaviour
     [SerializeField] float orbitalSpeed;
     [SerializeField] string planetName;
 
-    //Each planet has two curves to create elliptical orbit
-    [SerializeField] Transform[] curves;
+    //a reference to scriptable object
+    [SerializeField] PlanetPositionInfoSO planetInfo;
     
     private int currentCurve = 0;
 
@@ -30,10 +30,10 @@ public class OrbitMove : MonoBehaviour
             t += orbitalSpeed * Time.deltaTime;
             destination = BezierCurveManager.
                 sharedInstance.GetBezierCurve(t,
-                    curves[currentCurve].GetChild(0).position,
-                    curves[currentCurve].GetChild(1).position,
-                    curves[currentCurve].GetChild(2).position,
-                    curves[currentCurve].GetChild(3).position);
+                   planetInfo._curves[currentCurve].GetChild(0).position,
+                   planetInfo._curves[currentCurve].GetChild(1).position,
+                   planetInfo._curves[currentCurve].GetChild(2).position,
+                   planetInfo._curves[currentCurve].GetChild(3).position);
 
             transform.position = destination;
 
@@ -44,7 +44,7 @@ public class OrbitMove : MonoBehaviour
         currentCurve++;
 
         //if each curve is completed start the loop again
-        if(currentCurve == curves.Length)
+        if(currentCurve == planetInfo._curves.Length)
         {
             currentCurve = 0;
             Debug.Log(planetName + " made a full circle");
